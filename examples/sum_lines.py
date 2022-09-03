@@ -1,16 +1,19 @@
-from simple_eff import Effect, eff
+from typing import Any, Callable, Generator, Optional
+
+from simple_eff import Effect, eff, Eff
 
 not_integer = Effect()
 
-def parse_int(str):
+
+def parse_int(str: str) -> Optional[int]:
     try:
         return int(str)
-    except:
+    except Exception:
         return None
 
 
 @eff
-def sum_lines(s: str) -> int:
+def sum_lines(s: str) -> Generator[Eff[str], int, int]:
     lines = s.split()
     sum = 0
     for line in lines:
@@ -22,12 +25,12 @@ def sum_lines(s: str) -> int:
     return sum
 
 
-def handle_notinteger(k, v):
+def handle_notinteger(k: Callable, v: str) -> Any:
     print(f"Parse Error: {v} is not an integer.")
     return k(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     twelve = sum_lines("1\n2\nthree\n4\n5")
     twelve.on(not_integer, handle_notinteger)
     ret = twelve.run()

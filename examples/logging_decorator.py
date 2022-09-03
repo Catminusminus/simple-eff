@@ -2,6 +2,7 @@ from simple_eff import Effect, eff
 
 log = Effect()
 
+
 @eff
 def plus_one(a: int):
     yield log.perform(a)
@@ -13,7 +14,7 @@ def handle_log(k, v):
     return k(None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     eleven = plus_one(10)
     eleven.on(log, handle_log)
     ret = eleven.run()
